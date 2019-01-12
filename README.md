@@ -1,5 +1,5 @@
 <h1 align="center">sesame</h1>
-<h3 align="center">🍩 openmessage qr code auth service</h3>
+<h3 align="center">🍩 secret qr code auth service</h3>
 
 ## Usage
 
@@ -16,11 +16,9 @@
 
 ```
 Julian Weiss
-julian@openmessage.io
 github.com/@insanj
  ```
  
  ## License
  
- (c) 2019 copyright Julian Weiss. Made using private resources and no OpenMessage technology or property.
- 
+(c) 2019 Copyright Julian Weiss. This product has no affiliation with OpenMessage and was made using private resources and no OpenMessage technology or property.
