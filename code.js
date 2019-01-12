@@ -47,5 +47,6 @@ async function generateSesameQRCode(config) {
 
 // exports
 module.exports = {
-    generate: generateSesameQRCode
+    generate: generateSesameQRCode,
+    generateWithContents: QRCode.toDataURL
 };
