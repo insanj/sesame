@@ -2,10 +2,10 @@
 
 // deps
 const express = require('express');
-const hat = require('hat');
+var emoji = require('node-emoji')
 require('dotenv').config();
 const SesameCode = require('./code.js');
-const SesameAuth = require('./auth.js');
+const SesameTwilio = require('./twilio.js');
 
 // config
 const sesameConfig = {
@@ -23,7 +23,7 @@ console.log(`🌻 waking up with config: ${JSON.stringify(sesameConfig)}`);
 const app = express();
 
 app.get('/', (req, res) => {
-    res.sendfile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/code', async (req, res) => {
@@ -55,22 +55,31 @@ app.get('/ask/:phoneNumber', (req, res) => {
     // const qrCodeDataURL = await SesameCode.generateWithContents(askTwilioPhoneNumber);
     const phoneNumber = req.params.phoneNumber;
     if (!phoneNumber || phoneNumber.length <= 0) {
+        const e = new Error(`Invalid phone number provided ${phoneNumber}`);
+        console.error(e);
         res.status(500).send({
-            error: new Error(`Invalid phone number provided ${phoneNumber}`)
+            error: e
         }).end();
         return;
     }
 
-    const authCode = hat(4);
+    const lengthOfEmojiCode = 1;
+    var emojiString = "";
+    for (var i = 0; i < lengthOfEmojiCode; i++) {
+        emojiString += emoji.random().emoji;
+    }
+
+    const authCode = emojiString;
     tokens[phoneNumber] = authCode;
 
-    SesameAuth.sendSMSToPhoneNumber(sesameConfig, authCode, phoneNumber).then(response => {
+    SesameTwilio.sendSMSToPhoneNumber(sesameConfig, authCode, phoneNumber).then(response => {
         res.status(200).send({
             message: `🍩 Check phone # ${phoneNumber} for an auth token.`,
             phoneNumber: phoneNumber,
             authCode: authCode
         }).end();
     }).catch(e => {
+        console.error(e);
         res.status(500).send({
             error: e
         }).end();

@@ -19,6 +19,10 @@ async function askForPhoneNumber(config) {
 
 async function sendSMSToPhoneNumber(config, body, phoneNumber) {
     return new Promise((resolve, reject) => {
+        const accountSid = config.SESAME_TWILIO_ACCOUNT_SID;
+        const authToken = config.SESAME_TWILIO_ACCOUNT_TOKEN;
+        const client = twilio(accountSid, authToken);
+    
         client.messages
         .create({from: config.SESAME_TWILIO_PHONE_NUMBER, body: body, to: phoneNumber})
         .then(message => resolve(message.sid))
@@ -30,6 +34,4 @@ async function sendSMSToPhoneNumber(config, body, phoneNumber) {
 // exports
 module.exports = {
     sendSMSToPhoneNumber: sendSMSToPhoneNumber,
-    generateAuthToken: generateAuthToken,
-    validatePhoneNumberAuthToken: validatePhoneNumberAuthToken
 };

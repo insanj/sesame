@@ -1,11 +1,47 @@
 <html>
+<head>
+    <title>🍩 Sesame</title>
+</head>
 
 <body>
 
+    <h1 style="font-family: Roboto, sans-serif; text-align: center;">Loading...</h1>
+
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
-        $.getJSON("/code", (data, textStatus, jqXHR) => {
-            $("body").append(`<img src="${data}"/>`);
+        $(function() {
+            //$.getJSON("/code", (data, textStatus, jqXHR) => {
+                $("body").html(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">🍩<br/>Enter your Phone Number</h1>`);
+                $("body").append(`<form id="phone_form" style="text-align: center;"><input id="phone" type="phone" placeholder="Phone Number"/></form>`);
+               // $("body").append(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">Then use your Phone Camera to scan this code 📲</h1>`);
+                // $("body").append(`<center><img src="${data.code}"/></center>`);
+            //});
+
+            $("body").on("submit", "#phone_form", function(event) {
+                event.preventDefault();
+
+                const phoneVal = $("#phone").val();
+                const phoneNumber = phoneVal.replace(/[^0123456789]/g, "");
+
+                $("body").html(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">🔥<br/>Cooking...</h1>`);
+
+                $.getJSON(`/ask/${phoneNumber}`, (data, textStatus, jqXHR) => {
+                    $("body").append(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">📲<br/>Check ${phoneNumber} for your emojis</h1>`);
+
+                    $("body").append(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">🎹<br/>Type below to check if your code still works</h1>`);
+                    $("body").append(`<form id="emoji_form" style="text-align: center;"><input id="emoji" type="phone" placeholder="Emoji Code"/></form>`);
+
+                    $("body").on("submit", "#emoji_form", function(event) {
+                        event.preventDefault();
+                        
+                        const emojiCode = $("#emoji").val();
+                        $.getJSON(`/tell/${phoneNumber}/${emojiCode}/`, (data, textStatus, jqXHR) => {
+                            $("body").append(`<h1 style="font-family: Roboto, sans-serif; text-align: center;">${phoneNumber} ${emojiCode} ${data.message}</h1>`);
+                        });
+                    });
+                });
+            });
         });
     </script>
 </bodY>
