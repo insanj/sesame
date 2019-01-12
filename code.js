@@ -14,8 +14,9 @@ async function getSesameAPIURL(config) {
 }
 
 async function getSesameAPIAskEndpointURL(config) {
+    const base = await getSesameAPIURL(config);
     const endpoint = "ask";
-    return `${getSesameAPIURL(config)}${endpoint}`;
+    return `${base}${endpoint}`;
 }
 
 async function getSesameQRCodePath(config) {
@@ -45,9 +46,6 @@ async function generateSesameQRCode(config) {
 }
 
 // exports
-
-module.exports = function (options) {
-    return {
-        generate: generateSesameQRCode(config)
-    }
-}
+module.exports = {
+    generate: generateSesameQRCode
+};
