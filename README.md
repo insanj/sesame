@@ -3,14 +3,8 @@
 
 ## Usage
 
-| |  |
-|:---:|:---:|
-|Step One|Snap QR code with your phone|
-|Step Two|Open redirect URL which will display a phone number to SMS|
-|Step Three|Send anything and receive an emoji code|
-|Step Four|Click the QR code and put the code into the text field|
-|Step Five|Sesame API will authenticate and allow you to pass|
-| | |
+- `/ask/${phoneNumber}` to get an emoji code
+- `/tell/${phoneNumber}/${emojiCode}/` to see if authenticated
 
 ## Authors
 

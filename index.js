@@ -14,7 +14,8 @@ const sesameConfig = {
     SESAME_TWILIO_ACCOUNT_SID:process.env.SESAME_TWILIO_ACCOUNT_SID,
     SESAME_TWILIO_ACCOUNT_TOKEN:process.env.SESAME_TWILIO_ACCOUNT_TOKEN,
     SESAME_TWILIO_SERVICE_SID:process.env.SESAME_TWILIO_SERVICE_SID,
-    SESAME_TWILIO_PHONE_NUMBER:process.env.SESAME_TWILIO_PHONE_NUMBER
+    SESAME_TWILIO_PHONE_NUMBER:process.env.SESAME_TWILIO_PHONE_NUMBER,
+    SESAME_NOTIFY_NUMBER:process.env.SESAME_NOTIFY_NUMBER
 };
 
 console.log(`🌻 waking up with config: ${JSON.stringify(sesameConfig)}`);
@@ -100,8 +101,16 @@ app.get('/tell/:phoneNumber/:authToken', (req, res) => {
 
     const success = tokens[phoneNumber] === authToken;
     if (success === true) {
+        const authorizedString = `✅ ${phoneNumber} authorized!`;
+        const notifyNumber = sesameConfig.SESAME_NOTIFY_NUMBER;
+        SesameTwilio.sendSMSToPhoneNumber(sesameConfig, authorizedString, notifyNumber).then(v => {
+            console.log(`Notified ${notifyNumber} ${JSON.stringify(v)}`)
+        }).catch(e => {
+            console.error(e);
+        });
+
         res.status(200).send({
-            message: `✅ ${phoneNumber} authorized!`,
+            message: authorizedString,
             authorized: true,
             phoneNumber: phoneNumber,
             authToken: authToken
