@@ -1,7 +1,7 @@
 {
   "name": "sesame",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "� secret qr code auth service",
   "main": "index.js",
   "scripts": {
